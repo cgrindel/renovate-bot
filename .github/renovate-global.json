@@ -1,0 +1,13 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "branchPrefix": "github-renovate/",
+  "dependencyDashboardTitle": "Dependency Dashboard self-hosted",
+  "onboarding": true,
+  "onboardingBranch": "github-renovate/configure",
+  "platform": "github",
+  "username": "cgrindel-self-hosted-renovate[bot]",
+  "gitAuthor": "Self-hosted Renovate Bot <361546+cgrindel-self-hosted-renovate[bot]@users.noreply.github.enterprise.com>",
+  "repositories": [
+    "cgrindel/rules_swift_package_manager"
+  ]
+}
