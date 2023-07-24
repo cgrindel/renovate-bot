@@ -7,6 +7,9 @@
   "platform": "github",
   "username": "cgrindel-self-hosted-renovate[bot]",
   "gitAuthor": "Self-hosted Renovate Bot <361546+cgrindel-self-hosted-renovate[bot]@users.noreply.github.enterprise.com>",
+  "allowedPostUpgradeCommands": [
+    "^bazel run //:tidy"
+  ],
   "repositories": [
     "cgrindel/bazel-starlib",
     "cgrindel/dev-machine",
