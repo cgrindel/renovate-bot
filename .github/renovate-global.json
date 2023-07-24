@@ -8,6 +8,19 @@
   "username": "cgrindel-self-hosted-renovate[bot]",
   "gitAuthor": "Self-hosted Renovate Bot <361546+cgrindel-self-hosted-renovate[bot]@users.noreply.github.enterprise.com>",
   "repositories": [
-    "cgrindel/rules_swift_package_manager"
+    "cgrindel/bazel-starlib",
+    "cgrindel/dev-machine",
+    "cgrindel/gha_configure_git_user",
+    "cgrindel/gha_create_release",
+    "cgrindel/gha_install_swift_on_ubuntu",
+    "cgrindel/gha_join_jobs",
+    "cgrindel/gha_move_major_version_tag",
+    "cgrindel/gha_select_value",
+    "cgrindel/gha_set_up_action_cache",
+    "cgrindel/gha_set_up_bazel",
+    "cgrindel/github_snippets",
+    "cgrindel/renovate-bot",
+    "cgrindel/rules_swift_package_manager",
+    "cgrindel/rules_swiftformat"
   ]
 }
