@@ -8,6 +8,8 @@
   "username": "cgrindel-self-hosted-renovate[bot]",
   "gitAuthor": "Self-hosted Renovate Bot <361546+cgrindel-self-hosted-renovate[bot]@users.noreply.github.enterprise.com>",
   "allowedPostUpgradeCommands": [
+    "^npm",
+    "^which",
     "^bazelisk run //:tidy"
   ],
   "repositories": [
