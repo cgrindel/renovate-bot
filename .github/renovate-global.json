@@ -9,7 +9,7 @@
   "gitAuthor": "Self-hosted Renovate Bot <361546+cgrindel-self-hosted-renovate[bot]@users.noreply.github.enterprise.com>",
   "allowedPostUpgradeCommands": [
     "^npm",
-    "^do_renovate_post_upgrade",
+    "^./do_renovate_post_upgrade",
     "^bazelisk run //:tidy"
   ],
   "repositories": [
