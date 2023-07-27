@@ -1,0 +1,7 @@
+# action.yml
+name: 'Run Renovate with Bazel'
+description: 'Execute Renovate in container that includes Bazel'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
