@@ -21,10 +21,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Self-hosted Renovate
-        uses: renovatebot/github-action@v39.0.1
-        with:
-          configurationFile: .github/renovate-global.json
-          token: '${{ steps.get_token.outputs.token }}'
-        env:
-          LOG_LEVEL: debug
+      - name: Custom Self-hosted Renovate
+        uses: ./.github/actions/run_renovate_with_bazel
+
+#       - name: Self-hosted Renovate
+#         uses: renovatebot/github-action@v39.0.1
+#         with:
+#           configurationFile: .github/renovate-global.json
+#           token: '${{ steps.get_token.outputs.token }}'
+#         env:
+#           LOG_LEVEL: debug
