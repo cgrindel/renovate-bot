@@ -6,7 +6,8 @@ RUN npm install -g @bazel/bazelisk
 
 # Install latest stable clang
 # https://apt.llvm.org/
-RUN bash -c "$(curl -fsSL https://apt.llvm.org/llvm.sh)"
+# bash -c "$(curl -fsSL https://apt.llvm.org/llvm.sh)"
+RUN install-tool llvm-toolchain 16.0.0
 
 COPY fake_entrypoint.sh /fake_entrypoint.sh
 
