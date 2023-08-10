@@ -8,7 +8,8 @@ RUN install-tool wget 1.21.2
 
 # Install latest stable clang
 # https://apt.llvm.org/
-RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+# RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+RUN bash -c "$(curl -fsSL https://apt.llvm.org/llvm.sh)"
 
 COPY fake_entrypoint.sh /fake_entrypoint.sh
 
