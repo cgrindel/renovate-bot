@@ -4,6 +4,8 @@ FROM ghcr.io/renovatebot/renovate:36.24
 # Install Bazelisk
 RUN npm install -g @bazel/bazelisk
 
+RUN install-tool wget 1.21.2
+
 # Install latest stable clang
 # https://apt.llvm.org/
 RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
