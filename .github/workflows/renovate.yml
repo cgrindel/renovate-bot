@@ -2,8 +2,8 @@ name: Renovate
 
 on:
   schedule:
-    # Every hour
-    - cron: '0 * * * *'
+    # Every 3 hours
+    - cron: '* */3 * * *'
   workflow_dispatch:
 
 jobs:
