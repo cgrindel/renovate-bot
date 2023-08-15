@@ -1,9 +1,10 @@
 # Based on Renovate image
 FROM ghcr.io/renovatebot/renovate:36.46
 
-# Install clang
+# Install clang and Go
 USER 0
 RUN install-apt clang
+RUN install-apt golang-go
 USER 1000
 
 # Install Bazelisk
