@@ -7,6 +7,7 @@ USER 0
 # Install apt deps
 RUN install-apt clang
 RUN install-apt golang-go
+RUN install-apt default-jdk
 # BEGIN: Swift deps
 RUN install-apt libicu-dev 
 RUN install-apt build-essential 
@@ -69,5 +70,9 @@ USER 1000
 
 # Install Bazelisk
 RUN npm install -g @bazel/bazelisk
+
+
+# Set required environment variables
+ENV CC=clang
 
 # Use the entrypoint from the Renovate image
