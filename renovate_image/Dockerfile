@@ -1,5 +1,5 @@
 # Based on Renovate image
-FROM ghcr.io/renovatebot/renovate:36.51
+FROM ghcr.io/renovatebot/renovate:36.52
 
 # Install clang and Go
 USER 0
