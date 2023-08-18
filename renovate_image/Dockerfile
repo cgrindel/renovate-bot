@@ -6,15 +6,43 @@ USER 0
 
 # Install apt deps
 RUN install-apt clang
-RUN install-apt golang-go
 RUN install-apt default-jdk
-# BEGIN: Swift deps
+
+# BEGIN: Install Recent Go
+
+ARG GO_VERSION=1.21.0
+
+ENV GO_VERSION=$GO_VERSION
+
+RUN set -e; \
+    ARCH_NAME="$(dpkg --print-architecture)"; \
+    url=; \
+    case "${ARCH_NAME##*-}" in \
+        'amd64') \
+            OS_ARCH_SUFFIX=''; \
+            ;; \
+        'arm64') \
+            OS_ARCH_SUFFIX='-aarch64'; \
+            ;; \
+        *) echo >&2 "error: unsupported architecture: '$ARCH_NAME'"; exit 1 ;; \
+    esac; \
+    GO_BIN_URL="https://go.dev/dl/go${GO_VERSION}.linux-${ARCH_NAME}.tar.gz" \
+    && export GO_DOWNLOAD="$(mktemp -d)" \
+    && cd "${GO_DOWNLOAD}" \
+    && curl -fsSL "$GO_BIN_URL" -o go.tar.gz \
+    && tar -xzf go.tar.gz --directory /usr/local \
+    && rm -rf "${GO_DOWNLOAD}"
+
+ENV PATH="${PATH}:/usr/local/go/bin"
+
+# END: Install Recent Go
+
+# BEGIN: Install Swift
+
+# Prerequisites
 RUN install-apt libicu-dev 
 RUN install-apt build-essential 
 RUN install-apt pkg-config
-# END: Swift deps
-
-# BEGIN: Install Swift
 
 # Inspired by https://github.com/apple/swift-docker/blob/main/5.8/ubuntu/20.04/Dockerfile
 # pub   4096R/ED3D1561 2019-03-22 [SC] [expires: 2023-03-23]
@@ -32,8 +60,7 @@ ENV SWIFT_SIGNING_KEY=$SWIFT_SIGNING_KEY \
     SWIFT_VERSION=$SWIFT_VERSION \
     SWIFT_WEBROOT=$SWIFT_WEBROOT
 
-# RUN set -e; \
-RUN set -ex; \
+RUN set -e; \
     ARCH_NAME="$(dpkg --print-architecture)"; \
     url=; \
     case "${ARCH_NAME##*-}" in \
@@ -59,9 +86,6 @@ RUN set -ex; \
     && tar -xzf swift.tar.gz --directory / --strip-components=1 \
     && chmod -R o+r /usr/lib/swift \
     && rm -rf "$GNUPGHOME" "${SWIFT_DOWNLOAD}"
-
-# Print Installed Swift Version
-RUN swift --version
 
 # END: Install Swift
 
