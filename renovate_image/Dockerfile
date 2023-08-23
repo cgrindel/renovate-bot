@@ -99,4 +99,6 @@ RUN npm install -g @bazel/bazelisk
 # Set required environment variables
 ENV CC=clang
 
+# TEST CREATE RELEASE WORKFLOW
+
 # Use the entrypoint from the Renovate image
