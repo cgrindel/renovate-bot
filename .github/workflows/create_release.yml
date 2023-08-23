@@ -79,5 +79,5 @@ jobs:
         with:
           context: ./renovate_image
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: latest,${{ jobs.create_release.steps.version.outputs.v-version }}
           labels: ${{ steps.meta.outputs.labels }}
