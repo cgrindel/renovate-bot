@@ -12,7 +12,7 @@ on:
         description: "Specifies how the release version will be incremented from the current version."
         type: choice
         required: true
-        default: patch
+        default: minor
         options:
           - major
           - minor
