@@ -10,6 +10,8 @@ jobs:
   create_release:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
       - name: Get next version
         uses: reecetech/version-increment@2023.4.1
         id: version
@@ -20,8 +22,9 @@ jobs:
         shell: bash
         env:
           NEXT_VERSION: ${{ steps.version.outputs.version }}
-          NEXT_VERSION_TAG: ${{ steps.version.outputs.version }}
+          NEXT_VERSION_TAG: ${{ steps.version.outputs.v-version }}
         run: |
+          echo "default_branch: ${default_branch}"
           echo "NEXT_VERSION: $NEXT_VERSION"
           echo "NEXT_VERSION_TAG: $NEXT_VERSION_TAG"
 
