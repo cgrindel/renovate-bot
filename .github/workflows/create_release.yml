@@ -9,6 +9,8 @@ on:
 jobs:
   create_release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -18,13 +20,23 @@ jobs:
         with:
           scheme: semver
           increment: patch
+      - name: Create Release
+        uses: softprops/action-gh-release@v0.1.15
+        if: github.event.pull_request.merged == true
+        id: release
+        with:
+          name: Release ${{ steps.version.outputs.version }}
+          tag_name: ${{ steps.version.outputs.v-version }}
+          generate_release_notes: true
       - name: DEBUG
         shell: bash
+        if: github.event.pull_request.merged == true
         env:
           NEXT_VERSION: ${{ steps.version.outputs.version }}
           NEXT_VERSION_TAG: ${{ steps.version.outputs.v-version }}
+          RELEASE_URL: ${{ steps.release.outputs.url }}
         run: |
-          echo "default_branch: ${default_branch}"
           echo "NEXT_VERSION: $NEXT_VERSION"
           echo "NEXT_VERSION_TAG: $NEXT_VERSION_TAG"
+          echo "RELEASE_URL: ${RELEASE_URL}"
 
