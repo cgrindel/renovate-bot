@@ -46,7 +46,6 @@ jobs:
           increment: ${{ env.VERSION_INCREMENT }}
       - name: Create Release
         uses: softprops/action-gh-release@v0.1.15
-        if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
         id: release
         with:
           name: Release ${{ steps.version.outputs.version }}
@@ -55,6 +54,7 @@ jobs:
 
   build_and_push_image:
     needs: [create_release]
+    if: jobs.create_release.steps.release.conclusion == 'success'
     runs-on: ubuntu-latest
     # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
     permissions:
