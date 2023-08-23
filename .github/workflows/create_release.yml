@@ -74,5 +74,7 @@ jobs:
         with:
           context: ./renovate_image
           push: true
-          tags: latest,${{ needs.create_release.outputs.release_tag }}
+          tags: |
+            ${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest
+            ${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ needs.create_release.outputs.release_tag }}
           labels: ${{ steps.meta.outputs.labels }}
