@@ -1,13 +1,6 @@
 name: Create Release
 
 on:
-  # # Need to use pull_request_target instead of pull_request because there are situations when the 
-  # # pull_request event will not trigger.
-  # # https://github.com/orgs/community/discussions/26657
-  # pull_request_target:
-  #   types:
-  #     - closed
-
   # Only create a release if the Dockerfile has changed.
   push:
     branches: [main]
@@ -35,6 +28,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    outputs:
+      release_tag: ${{ steps.version.outputs.v-version }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -79,5 +74,5 @@ jobs:
         with:
           context: ./renovate_image
           push: true
-          tags: latest,${{ jobs.create_release.steps.version.outputs.v-version }}
+          tags: latest,${{ needs.create_release.outputs.release_tag }}
           labels: ${{ steps.meta.outputs.labels }}
