@@ -18,11 +18,12 @@ jobs:
         with:
           scheme: semver
           increment: patch
+          pep440: true
       - name: DEBUG
         shell: bash
         env:
           NEXT_VERSION: ${{ steps.version.outputs.version }}
-          NEXT_VERSION_TAG: ${{ steps.version.outputs.version }}
+          NEXT_VERSION_TAG: ${{ steps.version.outputs.v-version }}
         run: |
           echo "NEXT_VERSION: $NEXT_VERSION"
           echo "NEXT_VERSION_TAG: $NEXT_VERSION_TAG"
