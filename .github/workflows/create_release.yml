@@ -1,12 +1,18 @@
 name: Create Release
 
 on:
-  # Need to use pull_request_target instead of pull_request because there are situations when the 
-  # pull_request event will not trigger.
-  # https://github.com/orgs/community/discussions/26657
-  pull_request_target:
-    types:
-      - closed
+  # # Need to use pull_request_target instead of pull_request because there are situations when the 
+  # # pull_request event will not trigger.
+  # # https://github.com/orgs/community/discussions/26657
+  # pull_request_target:
+  #   types:
+  #     - closed
+
+  # Only create a release if the Dockerfile has changed.
+  push:
+    branches: [main]
+    paths:
+      - 'renovate_image/Dockerfile'
   workflow_dispatch:
     inputs:
       version_increment:
