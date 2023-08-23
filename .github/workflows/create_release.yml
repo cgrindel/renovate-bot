@@ -54,7 +54,7 @@ jobs:
 
   build_and_push_image:
     needs: [create_release]
-    if: jobs.create_release.steps.release.conclusion == 'success'
+    if: success()
     runs-on: ubuntu-latest
     # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
     permissions:
