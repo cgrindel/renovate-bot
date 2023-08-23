@@ -1,9 +1,12 @@
 name: Create Release
 
 on:
-  pull_request:
+  # Need to use pull_request_target instead of pull_request because there are situations when the 
+  # pull_request event will not trigger.
+  # https://github.com/orgs/community/discussions/26657
+  pull_request_target:
     types:
-      -closed
+      - closed
   workflow_dispatch:
     inputs:
       version_increment:
