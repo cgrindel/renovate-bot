@@ -18,13 +18,14 @@ jobs:
         with:
           scheme: semver
           increment: patch
-          pep440: true
       - name: DEBUG
         shell: bash
         env:
           NEXT_VERSION: ${{ steps.version.outputs.version }}
           NEXT_VERSION_TAG: ${{ steps.version.outputs.v-version }}
         run: |
+          default_branch="$(git remote show origin | grep 'HEAD branch' | cut -d ' ' -f 5 )"
+          echo "default_branch: ${default_branch}"
           echo "NEXT_VERSION: $NEXT_VERSION"
           echo "NEXT_VERSION_TAG: $NEXT_VERSION_TAG"
 
