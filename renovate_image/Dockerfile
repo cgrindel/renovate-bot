@@ -1,5 +1,5 @@
 # Based on Renovate image
-FROM ghcr.io/renovatebot/renovate:39.157
+FROM ghcr.io/renovatebot/renovate:39.158
 
 # Become root
 USER 0
