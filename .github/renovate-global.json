@@ -15,6 +15,7 @@
   "repositories": [
     "cgrindel/bazel-starlib",
     "cgrindel/dev-machine",
+    "cgrindel/swift_gazelle_plugin",
     "cgrindel/gha_configure_git_user",
     "cgrindel/gha_create_release",
     "cgrindel/gha_install_swift_on_ubuntu",
