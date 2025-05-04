@@ -27,5 +27,6 @@ jobs:
           configurationFile: .github/renovate-global.json
           token: '${{ steps.get_token.outputs.token }}'
           renovate-image: ghcr.io/cgrindel/renovate-bot
+          renovate-version: latest
         env:
           LOG_LEVEL: debug
