@@ -90,7 +90,9 @@ RUN set -e; \
 # END: Install Swift
 
 # Back to less privileged user
-USER 1000
+# ubuntu user (12021) according to 
+# https://github.com/renovatebot/renovate/blob/1ea20d5285511da18258177b893ac461df718f9f/tools/docker/Dockerfile#L121C6-L121C11
+USER ubuntu
 
 # BEGIN: Install Bazelisk
 
