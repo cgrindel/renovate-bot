@@ -40,7 +40,7 @@ jobs:
           scheme: semver
           increment: ${{ env.VERSION_INCREMENT }}
       - name: Create Release
-        uses: softprops/action-gh-release@v2.3.4
+        uses: softprops/action-gh-release@v2.4.0
         id: release
         with:
           name: Release ${{ steps.version.outputs.version }}
