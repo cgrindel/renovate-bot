@@ -1,11 +1,9 @@
 name: Renovate
-
 on:
   schedule:
     # Every 3 hours
     - cron: '0 */3 * * *'
   workflow_dispatch:
-
 jobs:
   renovate:
     runs-on: ubuntu-latest
@@ -17,12 +15,10 @@ jobs:
         with:
           private_key: ${{ secrets.PRIVATE_KEY }}
           app_id: ${{ secrets.APP_ID }}
-
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
-
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
       - name: Self-hosted Renovate
-        uses: renovatebot/github-action@v43.0.18
+        uses: renovatebot/github-action@v46.0.0
         with:
           configurationFile: .github/renovate-global.json
           token: '${{ steps.get_token.outputs.token }}'
