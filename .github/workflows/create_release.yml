@@ -31,7 +31,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - name: Get next version
-        uses: reecetech/version-increment@9e616d7ba5383b7ff7adaddcaa74b52ff018eb98 # 2026.8.1
+        uses: reecetech/version-increment@5f59cf0be0c7778ed120b09639c05a5af8ed3222 # 2026.8.2
         id: version
         with:
           scheme: semver
