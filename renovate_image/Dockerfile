@@ -44,17 +44,26 @@ RUN install-apt libicu-dev
 RUN install-apt build-essential 
 RUN install-apt pkg-config
 
-# Inspired by https://github.com/swiftlang/swift-docker/blob/main/6.1/ubuntu/20.04/Dockerfile
+# Inspired by https://github.com/swiftlang/swift-docker/blob/main/6.2/ubuntu/24.04/Dockerfile
 # NOTE: When copying over the latest code, do not install/uninstall curl. It is
 # already part of the base image. Also, it is used later in the build.
+
+# NOTE: SWIFT_PLATFORM must track the base image's Ubuntu release. The Renovate
+# image is built on containerbase (renovate:44 -> renovatebot/base-image ->
+# containerbase/sidecar -> containerbase/ubuntu:24.04). The RUN below asserts
+# the two agree, so a base image bump to a new Ubuntu release fails the build
+# rather than silently installing a mismatched toolchain.
+#
+# Separately, the toolchain must be at least 6.2 so that the post-upgrade tasks
+# can parse `swift-tools-version: 6.2` manifests.
 
 # pub   rsa4096 2024-09-16 [SC] [expires: 2026-09-16]
 #      52BB7E3DE28A71BE22EC05FFEF80A866B47A981F
 # uid           [ unknown] Swift 6.x Release Signing Key <swift-infrastructure@forums.swift.org>
 ARG SWIFT_SIGNING_KEY=52BB7E3DE28A71BE22EC05FFEF80A866B47A981F
-ARG SWIFT_PLATFORM=ubuntu20.04
-ARG SWIFT_BRANCH=swift-6.1-release
-ARG SWIFT_VERSION=swift-6.1-RELEASE
+ARG SWIFT_PLATFORM=ubuntu24.04
+ARG SWIFT_BRANCH=swift-6.2.4-release
+ARG SWIFT_VERSION=swift-6.2.4-RELEASE
 ARG SWIFT_WEBROOT=https://download.swift.org
 
 ENV SWIFT_SIGNING_KEY=$SWIFT_SIGNING_KEY \
@@ -62,6 +71,17 @@ ENV SWIFT_SIGNING_KEY=$SWIFT_SIGNING_KEY \
     SWIFT_BRANCH=$SWIFT_BRANCH \
     SWIFT_VERSION=$SWIFT_VERSION \
     SWIFT_WEBROOT=$SWIFT_WEBROOT
+
+# Fail loudly if SWIFT_PLATFORM no longer matches the base image's Ubuntu
+# release. Swift tarballs are built per Ubuntu release; a mismatch would install
+# a toolchain against the wrong glibc, which surfaces as a confusing runtime
+# failure inside a Renovate post-upgrade task rather than a build failure here.
+RUN . /etc/os-release \
+    && [ "$VERSION_ID" = "${SWIFT_PLATFORM#ubuntu}" ] \
+    || { \
+        echo >&2 "error: SWIFT_PLATFORM=$SWIFT_PLATFORM does not match base image Ubuntu $VERSION_ID"; \
+        exit 1; \
+    }
 
 RUN set -e; \
     ARCH_NAME="$(dpkg --print-architecture)"; \
