@@ -49,9 +49,13 @@ RUN install-apt pkg-config
 # already part of the base image. Also, it is used later in the build.
 
 # NOTE: SWIFT_PLATFORM must track the base image's Ubuntu release. The Renovate
-# image is built on containerbase, which is Ubuntu 24.04. Swift 6.2 does not
-# publish an Ubuntu 20.04 build, so the toolchain must be at least 6.2 for the
-# post-upgrade tasks to parse `swift-tools-version: 6.2` manifests.
+# image is built on containerbase (renovate:44 -> renovatebot/base-image ->
+# containerbase/sidecar -> containerbase/ubuntu:24.04). The RUN below asserts
+# the two agree, so a base image bump to a new Ubuntu release fails the build
+# rather than silently installing a mismatched toolchain.
+#
+# Separately, the toolchain must be at least 6.2 so that the post-upgrade tasks
+# can parse `swift-tools-version: 6.2` manifests.
 
 # pub   rsa4096 2024-09-16 [SC] [expires: 2026-09-16]
 #      52BB7E3DE28A71BE22EC05FFEF80A866B47A981F
@@ -67,6 +71,17 @@ ENV SWIFT_SIGNING_KEY=$SWIFT_SIGNING_KEY \
     SWIFT_BRANCH=$SWIFT_BRANCH \
     SWIFT_VERSION=$SWIFT_VERSION \
     SWIFT_WEBROOT=$SWIFT_WEBROOT
+
+# Fail loudly if SWIFT_PLATFORM no longer matches the base image's Ubuntu
+# release. Swift tarballs are built per Ubuntu release; a mismatch would install
+# a toolchain against the wrong glibc, which surfaces as a confusing runtime
+# failure inside a Renovate post-upgrade task rather than a build failure here.
+RUN . /etc/os-release \
+    && [ "$VERSION_ID" = "${SWIFT_PLATFORM#ubuntu}" ] \
+    || { \
+        echo >&2 "error: SWIFT_PLATFORM=$SWIFT_PLATFORM does not match base image Ubuntu $VERSION_ID"; \
+        exit 1; \
+    }
 
 RUN set -e; \
     ARCH_NAME="$(dpkg --print-architecture)"; \
