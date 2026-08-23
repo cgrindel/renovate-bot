@@ -1,8 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "branchPrefix": "github-renovate/",
-  "executionTimeout": 90,
   "dependencyDashboardTitle": "Dependency Dashboard self-hosted",
+  "executionTimeout": 120,
   "onboarding": true,
   "onboardingBranch": "github-renovate/configure",
   "platform": "github",

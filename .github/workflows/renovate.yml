@@ -4,11 +4,19 @@ on:
     # Every 3 hours
     - cron: '0 */3 * * *'
   workflow_dispatch:
+# Scheduled runs are frequently delayed past the cron tick, by up to ~50
+# minutes historically, so the 3 hour interval alone does not keep runs from
+# overlapping. Queue them instead of cancelling; a cancelled run leaves
+# branches half-updated.
+concurrency:
+  group: renovate
+  cancel-in-progress: false
 jobs:
   renovate:
     runs-on: ubuntu-latest
-    # Keep this and executionTimeout (90) in .github/renovate-global.json
-    # under the 3 hour cron interval so runs cannot overlap.
+    # Backstop for a wedged post-upgrade command. executionTimeout in
+    # .github/renovate-global.json bounds a single command; nothing bounds
+    # their sum, so this bounds the run.
     timeout-minutes: 150
     steps:
       - name: Get token
