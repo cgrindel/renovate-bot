@@ -7,7 +7,9 @@ on:
 jobs:
   renovate:
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    # Keep this and executionTimeout (90) in .github/renovate-global.json
+    # under the 3 hour cron interval so runs cannot overlap.
+    timeout-minutes: 150
     steps:
       - name: Get token
         id: get_token
