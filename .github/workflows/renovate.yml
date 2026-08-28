@@ -36,3 +36,25 @@ jobs:
           renovate-version: latest
         env:
           LOG_LEVEL: debug
+          # Gives do_renovate_post_upgrade in rules_swift_package_manager the
+          # BuildBuddy key, so its Bazel invocations share cached actions
+          # instead of rebuilding the Go toolchain in every modified workspace.
+          #
+          # customEnvVariables is what puts a value into a post-upgrade
+          # command's environment. Renovate builds that environment from a fixed
+          # list of variables that cannot be extended any other way. The name
+          # must also start with RENOVATE_, because renovatebot/github-action
+          # forwards only RENOVATE_*, LOG_LEVEL, GITHUB_COM_TOKEN, NODE_OPTIONS,
+          # and the proxy vars into the container.
+          #
+          # RENOVATE_SECRETS makes Renovate redact the value in its own output.
+          # This job runs at LOG_LEVEL debug, which dumps the resolved config,
+          # and customEnvVariables is not in Renovate's redactedFields. Without
+          # this, GitHub Actions masking is the only thing hiding the key.
+          #
+          # The {{ }} below is a Renovate secret template, not a GitHub
+          # expression. It has no leading $ on purpose.
+          #
+          # Verified against renovatebot/github-action 957af03, Renovate 44.30.3.
+          RENOVATE_SECRETS: '{"BUILDBUDDY_API_KEY":"${{ secrets.BUILDBUDDY_API_KEY }}"}'
+          RENOVATE_CUSTOM_ENV_VARIABLES: '{"BUILDBUDDY_API_KEY":"{{ secrets.BUILDBUDDY_API_KEY }}"}'
