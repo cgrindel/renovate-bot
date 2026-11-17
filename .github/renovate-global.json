@@ -8,6 +8,7 @@
   "platform": "github",
   "username": "cgrindel-self-hosted-renovate[bot]",
   "gitAuthor": "cgrindel-self-hosted-renovate[bot] <139595543+cgrindel-self-hosted-renovate[bot]@users.noreply.github.com>",
+  "allowedUnsafeExecutions": ["bazelModDeps"],
   "allowedCommands": [
     "^npm",
     "^./do_renovate_post_upgrade",
