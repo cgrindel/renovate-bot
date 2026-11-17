@@ -6,9 +6,9 @@
   ],
   "packageRules": [
     {
-      "description": "Renovate releases several times a week. Bump the base image weekly so each merge triggers one image release.",
+      "description": "Renovate releases several times a week. Bump the base image on Mondays (any run that day) so minor/patch bumps release the image about once a week.",
       "matchDepNames": ["ghcr.io/renovatebot/renovate"],
-      "schedule": ["* 0-5 * * 1"]
+      "schedule": ["* * * * 1"]
     }
   ]
 }
