@@ -3,5 +3,12 @@
   "extends": [
     "github>cgrindel/renovate_presets:cgrindel_default",
     "helpers:pinGitHubActionDigests"
+  ],
+  "packageRules": [
+    {
+      "description": "Renovate releases several times a week. Bump the base image on Mondays (any run that day) so minor/patch bumps release the image about once a week.",
+      "matchDepNames": ["ghcr.io/renovatebot/renovate"],
+      "schedule": ["* * * * 1"]
+    }
   ]
 }

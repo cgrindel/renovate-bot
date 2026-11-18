@@ -1,5 +1,5 @@
 # Based on Renovate image
-FROM ghcr.io/renovatebot/renovate:44
+FROM ghcr.io/renovatebot/renovate:44.251.0
 
 # Become root
 USER 0
@@ -49,7 +49,7 @@ RUN install-apt pkg-config
 # already part of the base image. Also, it is used later in the build.
 
 # NOTE: SWIFT_PLATFORM must track the base image's Ubuntu release. The Renovate
-# image is built on containerbase (renovate:44 -> renovatebot/base-image ->
+# image is built on containerbase (renovate -> renovatebot/base-image ->
 # containerbase/sidecar -> containerbase/ubuntu:24.04). The RUN below asserts
 # the two agree, so a base image bump to a new Ubuntu release fails the build
 # rather than silently installing a mismatched toolchain.
