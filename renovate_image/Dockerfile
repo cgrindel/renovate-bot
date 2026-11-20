@@ -4,9 +4,9 @@ FROM ghcr.io/renovatebot/renovate:44.251.0
 # Become root
 USER 0
 
-# containerbase's Java install appends
-# `export ANDROID_HOME=${ANDROID_HOME-~/.android-sdk}` to its global env file,
-# which every shell sources via BASH_ENV. That directory has no SDK APIs, and
+# containerbase's Java prepare step, which runs when the base image is built,
+# appends `export ANDROID_HOME=${ANDROID_HOME-~/.android-sdk}` to its global env
+# file, which every shell sources via BASH_ENV. That directory has no SDK APIs, and
 # rules_android's android_sdk_repository fails on an SDK with no APIs. When
 # ANDROID_HOME is unset, it creates a harmless stub instead. Drop the export.
 # The grep fails the build if the export is no longer in this file, so a
@@ -157,5 +157,15 @@ RUN set -e -x; \
 
 # Set required environment variables
 ENV CC=clang
+
+# Fail the build if a shell running as the runtime user still sees
+# ANDROID_HOME. bash sources BASH_ENV, so this catches an export from anywhere
+# containerbase loads. bash exits 0 even when BASH_ENV has a syntax error, so
+# any stderr output also fails the build. That catches a syntax error the
+# ANDROID_HOME removal above might leave in the env file.
+RUN bash -c env > /tmp/runtime-env 2> /tmp/runtime-env.err \
+    && { ! test -s /tmp/runtime-env.err || { cat /tmp/runtime-env.err >&2; false; }; } \
+    && ! grep -q '^ANDROID_HOME=' /tmp/runtime-env \
+    && rm /tmp/runtime-env /tmp/runtime-env.err
 
 # Use the entrypoint from the Renovate image
