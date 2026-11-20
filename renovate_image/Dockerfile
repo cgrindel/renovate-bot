@@ -4,6 +4,16 @@ FROM ghcr.io/renovatebot/renovate:44.251.0
 # Become root
 USER 0
 
+# containerbase's Java install appends
+# `export ANDROID_HOME=${ANDROID_HOME-~/.android-sdk}` to its global env file,
+# which every shell sources via BASH_ENV. That directory has no SDK APIs, and
+# rules_android's android_sdk_repository fails on an SDK with no APIs. When
+# ANDROID_HOME is unset, it creates a harmless stub instead. Drop the export.
+# The grep fails the build if the export is no longer in this file, so a
+# containerbase change that moves it does not silently bring the bug back.
+RUN grep -q ANDROID_HOME /usr/local/etc/env \
+    && sed -i '/ANDROID_HOME/d' /usr/local/etc/env
+
 # Install apt deps
 RUN install-apt clang
 RUN install-apt default-jdk
